@@ -61,8 +61,8 @@ fn read_config (path: &Path) -> Result<Vec<Config>> {
   Ok(ret)
 }
 
-fn file_name_from_path(path: &Path) -> Result<String> {
-  let ret = path.file_name().unwrap().to_os_string().into_string()?;
+fn file_stem_from_path(path: &Path) -> Result<String> {
+  let ret = path.file_stem().unwrap().to_os_string().into_string()?;
   Ok(ret)
 }
 
@@ -86,7 +86,7 @@ fn for_each_file(path: &Path, f: &mut FnMut(&Path) -> Result<()>) -> Result<()> 
 
 fn make_snippet(path: &Path) -> Result<Snippet> {
   let mut snippet = Snippet{
-    prefix: file_name_from_path(&path)?,
+    prefix: file_stem_from_path(&path)?,
     body: vec!(),
   };
   let file = File::open(&path)?;
