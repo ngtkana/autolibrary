@@ -125,8 +125,20 @@ fn make_and_write_snippet_json(config: &Config) -> Result<()> {
   Ok(())
 }
 
+fn read_args() -> String {
+  let args: Vec<String> = std::env::args().collect();
+  if args.len() != 2 {
+    eprintln!("The number of program argments is not two.");
+    panic!();
+  }
+  let arg = args.get(1).unwrap();
+  arg.to_string()
+}
+
 fn main() -> Result<()> {
-  let path = Path::new("config.json");
+  let path = read_args();
+  println!("Reading the config file `{}`", path);
+  let path = Path::new(&path);
   let configs = read_config(&path)?;
   for config in configs.iter() {
     make_and_write_snippet_json(&config)?;
