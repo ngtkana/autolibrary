@@ -1,0 +1,26 @@
+{
+  "sample_dir/dir_1/file_11.cpp": {
+    "body": [
+      "class file_11 {",
+      "  std::vector<int> v;",
+      "};"
+    ],
+    "prefix": "file_11.cpp"
+  },
+  "sample_dir/dir_2/dir_1/file_211.cpp": {
+    "body": [
+      "class file_211 {",
+      "  std::vector<int> v;",
+      "};"
+    ],
+    "prefix": "file_211.cpp"
+  },
+  "sample_dir/dir_2/file_21.cpp": {
+    "body": [
+      "class file_21 {",
+      "  std::vector<int> v;",
+      "};"
+    ],
+    "prefix": "file_21.cpp"
+  }
+}
