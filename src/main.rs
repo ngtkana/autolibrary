@@ -98,8 +98,14 @@ fn make_snippet(path: &Path) -> Result<Snippet> {
   Ok(snippet)
 }
 
-fn make_and_write_snippet_json(config: &Config) -> Result<()> {
-  println!("making a json file for `{}`", config.output_file);
+fn concatenate_paths(x: &String, y: &String) -> String {
+  x.to_owned() + "/" + y
+}
+
+fn make_and_write_snippet_json(config: &Config, path_prefix: &String) -> Result<()> {
+  println!("making a json file for `{}`", &config.output_file);
+  let output_file_path = concatenate_paths(&path_prefix, &config.output_file);
+
   let mut map = Map::new();
 
   let mut make_and_insert_snippet = |path: &Path| -> Result<()> {
@@ -112,15 +118,16 @@ fn make_and_write_snippet_json(config: &Config) -> Result<()> {
     Ok(())
   };
 
-  for path in config.input_dirs.iter() {
-    let path = Path::new(&path);
-    for_each_file(&path, &mut make_and_insert_snippet)?;
+  for input_path in config.input_dirs.iter() {
+    let input_path = concatenate_paths(&path_prefix, &input_path);
+    let input_path = Path::new(&input_path);
+    for_each_file(&input_path, &mut make_and_insert_snippet)?;
   }
 
   let file = OpenOptions::new()
     .write(true)
     .create(true)
-    .open(&config.output_file)?;
+    .open(&output_file_path)?;
   to_writer_pretty(&file, &map)?;
   Ok(())
 }
@@ -136,12 +143,13 @@ fn read_args() -> String {
 }
 
 fn main() -> Result<()> {
-  let path = read_args();
-  println!("Reading the config file `{}`", path);
-  let path = Path::new(&path);
-  let configs = read_config(&path)?;
+  let path_prefix = read_args();
+  println!("Reading the config file in `{}`", path_prefix);
+  let json_path = concatenate_paths(&path_prefix, &"config.json".to_string());
+  let json_path = Path::new(&json_path);
+  let configs = read_config(&json_path)?;
   for config in configs.iter() {
-    make_and_write_snippet_json(&config)?;
+    make_and_write_snippet_json(&config, &path_prefix)?;
   }
   Ok(())
 }
