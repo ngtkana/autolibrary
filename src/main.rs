@@ -97,11 +97,11 @@ fn make_snippet(path: &Path) -> Result<Snippet> {
     Ok(snippet)
 }
 
-fn concatenate_paths(x: &String, y: &String) -> String {
+fn concatenate_paths(x: &str, y: &str) -> String {
     x.to_owned() + "/" + y
 }
 
-fn make_and_write_snippet_json(config: &Config, path_prefix: &String) -> Result<()> {
+fn make_and_write_snippet_json(config: &Config, path_prefix: &str) -> Result<()> {
     println!("making a json file for `{}`", &config.output_file);
     let output_file_path = concatenate_paths(&path_prefix, &config.output_file);
 
