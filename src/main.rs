@@ -70,7 +70,7 @@ fn path_name_from_path(path: &Path) -> Result<String> {
     Ok(ret)
 }
 
-fn for_each_file(path: &Path, f: &mut FnMut(&Path) -> Result<()>) -> Result<()> {
+fn for_each_file(path: &Path, f: &mut dyn FnMut(&Path) -> Result<()>) -> Result<()> {
     if path.is_dir() {
         for child in read_dir(path)? {
             let child = child?;
